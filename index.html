@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .container {
+            bottom: 0;
+            height: calc(10vw + 0vh);
+            left: 0;
+            margin: auto;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: calc(30vw + 40vh);
+        }
+    </style>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+</head>
+
+
+<body ng-app="app">
+    <div class="container" ng-controller="myController">
+        <div class="row">
+            <h1>Flames Game Just For Fun</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-3" style="font-size: 18px; padding-top: 18px;">
+                <label>Enter Your Name:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control col-md-4 input-lg" ng-keyup="clearUnMatchedCharacter()" ng-model="name1" type="text" />
+            </div>
+        </div>
+        <div class="clearfix">
+        </div>
+        <div class="row" style="margin-top:10px">
+            <div class="col-md-3">
+                <label style="font-size: 18px; padding-top: 18px;">Enter Partner Name:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control col-md-4 input-lg" ng-keyup="clearUnMatchedCharacter()" ng-model="name2" type="text" />
+            </div>
+        </div>
+        <div class="clearfix margin-top-30"> </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2 col-md-offset-3">
+                <button class="btn btn-success" ng-click="compareCharacters()" type="button">Click Here To Continue</button>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-lg-9 col-md-offset-3" ng-show="nonMatchedCharacters">
+                <h2 ng-if="nonMatchedCharacters=='1' || nonMatchedCharacters=='27' || nonMatchedCharacters=='29'" style="display: inline;">
+                    <span style="background-color: green;">You and {{name2}} Are Siblings.</span>
+                </h2>
+                <h2 ng-if=" nonMatchedCharacters=='2' || nonMatchedCharacters=='4' || nonMatchedCharacters=='20' || nonMatchedCharacters=='22' || nonMatchedCharacters=='24' || nonMatchedCharacters=='25'|| nonMatchedCharacters=='7' || nonMatchedCharacters=='9'"
+                    style="display: inline;">
+                    <span style="background-color: red;">
+                        You and {{name2}} Are Sworn Enemy. </span>
+                </h2>
+                <h2 ng-if="nonMatchedCharacters=='3' || nonMatchedCharacters=='5' || nonMatchedCharacters=='14' || nonMatchedCharacters=='16' ||  nonMatchedCharacters=='18' || nonMatchedCharacters=='21'|| nonMatchedCharacters=='23'"
+                    style="display: inline;">
+                    <span style="background-color: orange;">You and {{name2}} Are Best Friends.</span>
+                </h2>
+                <h2 ng-if="nonMatchedCharacters=='6' || nonMatchedCharacters=='11' || nonMatchedCharacters=='15'|| nonMatchedCharacters=='26'"
+                    style="display: inline;">
+                    <span style="background-color: #b3ff66;">You and {{name2}} Will get married. </span>
+                </h2>
+                <h2 ng-if="nonMatchedCharacters=='8' || nonMatchedCharacters=='12' || nonMatchedCharacters=='13'|| nonMatchedCharacters=='17' || nonMatchedCharacters=='28' || nonMatchedCharacters=='29'"
+                    style="display: inline;">
+                    <span style="background-color:#66b3ff;">You and {{name2}} have attraction on each other.</span>
+                </h2>
+                <h2 ng-if="nonMatchedCharacters=='10'|| nonMatchedCharacters=='19'" style="display: inline;">
+                    <span style="background-color:#ff33cc;">You and {{name2}} Are Lovers.</span>
+                </h2>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = angular.module("app", []);
+        app.controller("myController", function ($scope) {
+            $scope.name1 = '';
+            $scope.name2 = '';
+            $scope.compareCharacters = function () {
+                $scope.string1 = $scope.name1.toLowerCase().split(' ').join('');
+                $scope.string2 = $scope.name2.toLowerCase().split(' ').join('');
+                var i = 0;
+                var j = 0;
+                var count = 0;
+                if ($scope.string1 == '' && $scope.string2 == '') {
+                    alert("Enter Your Name and Your Partner Name Properly");
+                    $scope.nonMatchedCharacters = '';
+                    return;
+                }
+                else if ($scope.string1 == '') {
+                    alert("Enter Your Name");
+                    $scope.nonMatchedCharacters = '';
+                    return;
+                }
+                else if ($scope.string2 == '') {
+                    alert("Enter Your Partner Name");
+                    $scope.nonMatchedCharacters = '';
+                    return;
+                }
+                for (var i; i < $scope.string1.length; i++) {
+                    for (var j; j < $scope.string2.length; j++) {
+                        if ($scope.string1.charAt(i) == $scope.string2.charAt(j)) {
+                            $scope.string1 = $scope.string1.slice(0, i) + $scope.string1.slice(i + 1, $scope.string1.length);
+                            $scope.string2 = $scope.string2.slice(0, j) + $scope.string2.slice(j + 1, $scope.string2.length);
+                            var i = -1;
+                        }
+                    }
+                    var j = 0;
+                }
+                $scope.nonMatchedCharacters = $scope.string1.length + $scope.string2.length;
+                if ($scope.nonMatchedCharacters == '0') {
+                    alert("Please Enter your name and your partner name as different")
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
